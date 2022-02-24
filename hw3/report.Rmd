@@ -15,14 +15,12 @@ library(ggplot2)
 
 ## Problem 1
 
-- c) Determine the expected value of X. 
+- c) **Determine the expected value of X.**
+\
 
-
-\begin{center}
-    The expected value for a random variable can be calculated by taking a
-    weighted sum where each possible value of the variable is weighted according
-    to its probability. This can be done in R as so:
-\end{center}
+The expected value for a random variable can be calculated by taking a
+weighted sum where each possible value of the variable is weighted according
+to its probability. This can be done in R as so:
 
 ``` {r}
 vals <- c(1, 3, 4, 6)
@@ -35,13 +33,12 @@ print(paste("Expected value: ", expectation))
 ```
 \
 
-- d) Determine the variance of X. 
+- d) **Determine the variance of X.**
+\
 
-\begin{center}
-    The variance of a random variable measures how much observed values differ
-    from the mean or expected value of the variable. It can be calculated using
-    R in this manner:
-\end{center}
+The variance of a random variable measures how much observed values differ
+from the mean or expected value of the variable. It can be calculated using
+R in this manner:
 
 ``` {r}
 squared_diff <- (vals - expectation)^2
@@ -53,13 +50,12 @@ print(paste("Variance of X: ", variance))
 ```
 \
 
-- e) Determine the standard deviation of X. 
+- e) **Determine the standard deviation of X.**
+\
 
-\begin{center}
-    The standard deviation of a random variable's distribution indicates how
-    spread values of the random variable are from the mean. It can be calculated
-    as so:
-\end{center}
+The standard deviation of a random variable's distribution indicates how
+spread values of the random variable are from the mean. It can be calculated
+as so:
 
 ``` {r}
 stddev <- sqrt(variance)
@@ -72,13 +68,12 @@ print(paste("Standard Deviation of X: ", stddev))
 
 
 ## Problem 2
-- a) Determine the pmf of X. 
+- a) **Determine the pmf of X.**
+\
 
-\begin{center}
-    The pmf can be calculated as shown below. The get_probs function calculates
-    the probability of each value of X according to the equation given in the
-    problem.
-\end{center}
+The pmf can be calculated as shown below. The get_probs function calculates
+the probability of each value of X according to the equation given in the
+problem.
 
 ``` {r}
 get_probs = function(vals) {
@@ -99,9 +94,11 @@ get_probs = function(vals) {
 vals = c(1, 2, 3, 4, 5, 6)
 probs <- get_probs(vals)
 ```
+\
+Probabilities:
 
 ```{r, echo=FALSE}
-print(paste("Probabilities: ", probs))
+print(probs)
 
 frame <- data.frame(vals, probs)
 ggplot(data = frame, 
@@ -110,7 +107,8 @@ ggplot(data = frame,
 
 \
 
-- b) Determine the cdf of X. 
+- b) **Determine the cdf of X.**
+
 ``` {r}
 get_cdf = function(pmf_probs) {
   cdf_probs <- vector()
@@ -133,19 +131,17 @@ frame <- data.frame(vals, cdf_probs)
 
 ggplot(data = frame,
         mapping = aes(x = vals, y = cdf_probs)) + geom_col(aes(x=vals, y=cdf_probs))
-
-# plot(vals, cdf_probs, type='h')
 ```
 \
 
-- c) Determine the expected value of X. 
+- c) **Determine the expected value of X.**
 ``` {r}
 expectation <- sum(vals*probs)
 print(expectation)
 ```
 \
 
-- d) Determine the variance of X. 
+- d) **Determine the variance of X.**
 ``` {r}
 squared_diff <- (vals - expectation)^2
 variance <- sum(squared_diff * probs)
@@ -153,7 +149,7 @@ print(variance)
 ```
 \
 
-- e) Determine the standard deviation of X. 
+- e) **Determine the standard deviation of X.**
 ``` {r}
 stddev <- sqrt(variance)
 print(stddev)
@@ -162,7 +158,7 @@ print(stddev)
 
 
 ## Problem 3
-- a) Determine the pmf of X. 
+- a) **Determine the pmf of X.**
 ``` {r}
 vals = c(1, 2, 5, 10)
 probs <- c((4/10), (1/10), (2/10), (3/10))
@@ -174,21 +170,21 @@ plot(vals, probs, type='h')
 ```
 \
 
-- b) Determine the cdf of X. 
+- b) **Determine the cdf of X.**
 ``` {r}
 cdf_probs = get_cdf(probs)
 plot(vals, cdf_probs, type='h')
 ```
 \
 
-- c) Determine the expected value of X. 
+- c) **Determine the expected value of X.**
 ``` {r}
 expectation <- sum(vals*probs)
 print(expectation)
 ```
 \
 
-- d) Determine the variance of X. 
+- d) **Determine the variance of X.**
 ``` {r}
 squared_diff <- (vals - expectation)^2
 variance <- sum(squared_diff * probs)
@@ -196,7 +192,7 @@ print(variance)
 ```
 \
 
-- e) Determine the standard deviation of X. 
+- e) **Determine the standard deviation of X.**
 ``` {r}
 stddev <- sqrt(variance)
 print(stddev)
