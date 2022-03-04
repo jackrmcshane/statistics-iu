@@ -2,9 +2,10 @@
 title: "S520 Homework 3"
 author: "Jack McShane"
 date: '2022-02-19'
-output: pdf_document
+output: 
+  pdf_document:
+    extra_dependencies: ["amsmath", "amssymb", "ulem", "enumitem", "listings"]
 ---
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -21,6 +22,7 @@ library(ggplot2)
 The expected value for a random variable can be calculated by taking a
 weighted sum where each possible value of the variable is weighted according
 to its probability. This can be done in R as so:
+\
 
 ``` {r}
 vals <- c(1, 3, 4, 6)
@@ -36,9 +38,11 @@ print(paste("Expected value: ", expectation))
 - d) **Determine the variance of X.**
 \
 
+
 The variance of a random variable measures how much observed values differ
 from the mean or expected value of the variable. It can be calculated using
 R in this manner:
+\
 
 ``` {r}
 squared_diff <- (vals - expectation)^2
@@ -56,6 +60,7 @@ print(paste("Variance of X: ", variance))
 The standard deviation of a random variable's distribution indicates how
 spread values of the random variable are from the mean. It can be calculated
 as so:
+\
 
 ``` {r}
 stddev <- sqrt(variance)
@@ -72,8 +77,9 @@ print(paste("Standard Deviation of X: ", stddev))
 \
 
 The pmf can be calculated as shown below. The get_probs function calculates
-the probability of each value of X according to the equation given in the
+the probability of each value of X according to the equation given by the
 problem.
+\
 
 ``` {r}
 get_probs = function(vals) {
@@ -99,15 +105,36 @@ Probabilities:
 
 ```{r, echo=FALSE}
 print(probs)
+```
 
+\
+The pmf of the random variable X can be written as such: 
+
+\[
+f(x) = 
+\begin{cases}
+  .30, & x = 1 \\
+  .25, & x = 2 \\
+  .20, & x = 3 \\
+  .15, & x = 4 \\
+  .10, & x = 5 \\
+  0, & otherwise
+\end{cases}
+\]
+
+```{r, echo=FALSE}
 frame <- data.frame(vals, probs)
 ggplot(data = frame, 
-          mapping = aes( x = vals, y = probs)) + geom_col(aes(x=vals, y=probs))
+          mapping = aes( x = vals, y = probs)) + geom_col(aes(x=vals, y=probs), fill="orange")
 ```
 
 \
 
 - b) **Determine the cdf of X.**
+\
+
+The cdf of X can be calculated in r as shown below:
+\
 
 ``` {r}
 get_cdf = function(pmf_probs) {
@@ -127,84 +154,298 @@ get_cdf = function(pmf_probs) {
 }
 
 cdf_probs <- get_cdf(probs)
+```
+```{r, echo=FALSE}
+print("Value of X's cdf:")
+print(cdf_probs)
+```
+
+\
+The cdf for x can be written as shown:
+\
+
+\[
+F(x) =
+\begin{cases}
+  0, & x < 1 \\
+  .3, & 1 \leq x < 2 \\
+  .55, & 2 \leq x < 3 \\
+  .75, & 3 \leq x < 4 \\
+  .90, & 4 \leq x < 5 \\
+  1, & x \geq 5
+\end{cases}
+\]
+
+
+\
+```{r, echo=FALSE}
 frame <- data.frame(vals, cdf_probs)
 
 ggplot(data = frame,
-        mapping = aes(x = vals, y = cdf_probs)) + geom_col(aes(x=vals, y=cdf_probs))
-```
+        mapping = aes(x = vals, y = cdf_probs)) + geom_col(aes(x=vals, y=cdf_probs), fill="orange")
+``` 
 \
 
 - c) **Determine the expected value of X.**
+\
 ``` {r}
 expectation <- sum(vals*probs)
-print(expectation)
+```
+```{r, echo=FALSE}
+print(paste("Expected value of X: ", expectation))
 ```
 \
 
 - d) **Determine the variance of X.**
+\
 ``` {r}
 squared_diff <- (vals - expectation)^2
 variance <- sum(squared_diff * probs)
-print(variance)
+```
+```{r, echo=FALSE}
+print(paste("Variance of X: ", variance))
 ```
 \
 
 - e) **Determine the standard deviation of X.**
+\
 ``` {r}
 stddev <- sqrt(variance)
-print(stddev)
+```
+```{r, echo=FALSE}
+print(paste("Standard deviation of X: ", stddev))
 ```
 \
 
 
 ## Problem 3
 - a) **Determine the pmf of X.**
+\
 ``` {r}
 vals = c(1, 2, 5, 10)
 probs <- c((4/10), (1/10), (2/10), (3/10))
-
-print(vals)
+```
+Probabilities:
+```{r, echo=FALSE}
+print("Values of X's pmf function:")
 print(probs)
+```
+\
 
-plot(vals, probs, type='h')
+X's pmf function can be written as such:
+
+\[
+f(x) =
+\begin{cases}
+  .4, & x = 1 \\
+  .1, & x = 2 \\
+  .2, & x = 5 \\
+  .3, & x = 10 \\
+  0, & otherwise
+\end{cases}
+\]
+
+\
+```{r, echo=FALSE}
+frame <- data.frame(vals, probs)
+ggplot(data = frame,
+        mapping = aes(x = vals, y = probs)) + geom_col(aes(x=vals, y=probs), fill="orange")
 ```
 \
 
 - b) **Determine the cdf of X.**
+\
 ``` {r}
 cdf_probs = get_cdf(probs)
-plot(vals, cdf_probs, type='h')
+```
+```{r, echo=FALSE}
+print("Values of X's cdf:")
+print(cdf_probs)
+```
+\
+X's cdf can be written as such:
+\
+
+\[
+F(x) = 
+\begin{cases}
+  0, & x < 1 \\
+  .4, & 1 \leq x < 2 \\
+  .5, & 2 \leq x < 5 \\
+  .7, & 5 \leq x < 10 \\
+  1, & x \geq 10
+\end{cases}
+\]
+```{r, echo=FALSE}
+frame <- data.frame(vals, cdf_probs)
+ggplot(data = frame,
+        mapping = aes(x = vals, y = cdf_probs)) + geom_col(aes(x=vals, y=cdf_probs), fill="orange")
 ```
 \
 
 - c) **Determine the expected value of X.**
+\
 ``` {r}
 expectation <- sum(vals*probs)
-print(expectation)
+```
+```{r, echo=FALSE}
+print(paste("Expected value of X: ", expectation))
 ```
 \
 
 - d) **Determine the variance of X.**
+\
 ``` {r}
 squared_diff <- (vals - expectation)^2
 variance <- sum(squared_diff * probs)
-print(variance)
+```
+```{r, echo=FALSE}
+print(paste("Variance of X: ", variance))
 ```
 \
 
 - e) **Determine the standard deviation of X.**
+\
 ``` {r}
 stddev <- sqrt(variance)
-print(stddev)
+```
+```{r, echo=FALSE}
+print(paste("Standard deviation of X: ", stddev))
 ```
 \
 
 
 ## Problem 11
+\
+
+- **What is the probability that the hotel will have to turn away statisticians who have reserved rooms?**
+\
+
+If we take X to be the number of statisticians that show up to the hotel, then we can say:
+
+\[X \sim \mbox{Binomial}(n=110, p=.96)\]
+
+For the hotel to not turn away any guests, 100 or fewer statisticians need to show up. We can calculate this as such:
+
+\[ P(X > 100) = 1 - P(X \leq 100) \]
+
+In R, the calculation can be performed as so:
+\
+```{r}
+prob <- 1 - pbinom(100, size=110, prob=.96)
+```
+```{r, echo=FALSE}
+print(paste("The probability that the hotel will turn away a guest: ", prob))
+```
+\
 
 ## Problem 13
+\
 
-## Problem something
+- a) **What is the probability that chance variation would result in at least 12 of 38 challenged calls being overturned?**
+\
 
-## Problem something 2
+If we take X to be the number of calls overruled, then we can say:
+\
 
+\[X \sim \mbox{Binomial}(n=38, p=.2)\]
+
+\
+The probability that there are 12 or more rulings overturned can be written thusly:
+\
+\[P(X \geq 12) = P(X > 11) = 1 - P(X \leq 11)\]
+\
+This can be calculated in R as so:
+```{r}
+prob <- 1 - pbinom(12, size=38, p=.2)
+```
+```{r, echo=FALSE}
+print(paste("The probability that 12 or more calls will be overruled: ", prob))
+```
+\
+
+- b) **Suppose that the William & Mary women's tennis team plays 25 team matches next year and challenges exactly 38 calls in each match. What is the probability that they will play at least one team match in which at least 12 challenged calls are overruled?**
+\
+If we now take X to be the number of matches where 12 or more calls are overruled, we can say:
+\
+\[X \sim \mbox{Binomial}(n=25, p=.02879)\]
+\
+The probability, then, that at least one of 25 matches played throughout a season will have 12 or more calls overturned can be represented as such:
+\
+\[P(X \geq 1) = P(X > 0)\]
+\
+This can be calculated in R as shown:
+\
+```{r}
+prob <- pbinom(0, size=35, p=.02879, lower.tail = FALSE)
+```
+```{r, echo=FALSE}
+print(paste("Probability of at least one game having at least 12 calls overturned:", prob))
+```
+\
+
+## Problem 6: Let a random variable $X \sim \mbox{Bernoulli}(p)$, compute its population mean $\mu$, population variance $\sigma^2$, and population standard deviation $\sigma$.
+
+\
+
+The Bernoulli distribution is a special case of the binomial distribution where there is only one experiment performed. This means that there is a single event which has two possible outcomes, 0 or 1, and a probability of success, p. We can therefore calculate the expected value (aka. population mean) of X as so:
+\
+
+\[\mu = 1*P(X=1) + 0*P(X=0) \]
+\[\mu = 1*(p) + 0*(1 - p)\]
+\[\mu = p\]
+
+\
+The variance of X can be calculated as so:
+\
+
+\[E(X^2) = \sum x^2P(X=x)\]
+\[E(X^2) = 1^2*P(X=1) + 0^2*P(X=0)\]
+\[E(X^2) = 1^2*p + 0^2*(1-p)\]
+\[E(X^2) = p\]
+
+\[\sigma^2 = E(X^2) - E^2(X)\]
+\[\sigma^2 = p - p^2\]
+\[\sigma^2 = p(1 - p)\]
+\
+
+The standard deviation is then:
+\
+\[\sigma = \sqrt{Var(X)}\]
+\[\sigma = \sqrt{p(1-p)}\]
+
+\
+
+## Problem 7: Let a random variable $Y \sim \mbox{Binomial}(n, p)$, compute its population mean $\mu$, population variance $\sigma^2$, and population standard deviation $\sigma$.
+\
+
+For a variable that follows a Binomial distribution, the probability that that variable takes on a value, k, can be written as such:
+
+\[P(Y=k) = {n \choose k}p^k(1-p)^{n-k}, \quad k=0, 1,\dots,n\]
+\
+
+This will be useful when calculating the expected value (population mean) and variance of Y. The expected value of Y is calculated as shown:
+\
+
+\[\mu = \sum_{k=0}^{n} k*P(Y=k)\]
+\[\mu = \sum_{k=0}^{n}k{n \choose k}p^k(1-p)^{n-k}\]
+\[\mu = \sum_{k=1}^{n}n{n-1 \choose k-1}p^k(1-p)^{n-k}\]
+\[\mu = np \sum_{k=1}^{n}{n-1 \choose k-1}p^k(1-p)^{(n-1) - (k-1)}\]
+\[\mu = np[p - (1-p)]^{n-1}\]
+\[\mu = np\]
+\
+
+Assuming iid., the variance of Y can then be derived as so:
+\
+
+\[\sigma^2 = Var(X_{1} + X_{2} + \dots + X_{n})\]
+\[\sigma^2 = Var(X_{1}) + Var(X_{2}) + \dots + Var(X_{n})\]
+\[\sigma^2 = p(1-p) + p(1-p) + \dots + p(1-p)\]
+\[\sigma^2 = np(1-p)\]
+\
+
+It then follows that the standard deviation, $\sigma$ is:
+\
+
+\[\sigma = \sqrt{\sigma^2}\]
+\[\sigma = \sqrt{np(1-p)}\]
