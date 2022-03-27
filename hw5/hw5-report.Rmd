@@ -1,0 +1,123 @@
+---
+title: "hw5-report"
+author: "Jack McShane"
+date: '2022-03-26'
+output: 
+  pdf_document:
+    extra_dependencies: ["amsmath", "amssymb", "ulem", "enumitem", "listings"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install.packages('ggplot2', repos = "https://cran.us.r-project.org")
+library(ggplot2)
+```
+
+\
+\
+
+## 1. Let $Y \sim Norm(\mu, \sigma^2)$. Write down its pdf. \
+
+\[
+\boxed{f(y) = \frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(y - \mu)^2}{2\sigma^2}}}
+\]
+
+\
+\
+
+## 2. Let $Y_1,Y_2,\dots,Y_n \sim_{iid} N(\mu, \sigma^2)$, then write down the joint distribution $f(y_1,\dots,y_n)$ when $Y_1 = y_1,\dots,Y_n = y_n$ are observed. \
+
+Given that the random variables $Y_1,\dots,Y_n$ are independent and identically distributed, the joint distribution resolves as so: \
+
+\[
+\begin{aligned}
+  f(y_1,y_2,\dots,y_n) &= f(y_1)*f(y_2)*\dots*f(y_n) \\
+  &= \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(y_1 - \mu)^2}{2\sigma^2}} \times \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(y_2 - \mu)^2}{2\sigma^2}} \times \dots \times \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(y_n - \mu)^2}{2\sigma^2}} \\
+  &\boxed{= (\frac{1}{\sqrt{2\pi}\sigma})^n \times e^{-\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}} \\
+\end{aligned}
+\]
+
+\
+\
+
+## 3. This joint distribution is a function of $\mu$ and $\sigma$, when $Y_1 = y_1,\dots,Y_n = y_n$ are observed. It is called the Likelihood function. Write down this Likelihood function $L(\mu,\sigma)$. \
+
+Given that we have values for $y_1,y_2,\dots,y_n$, the equation above can now be written as a function of $\mu$ and $\sigma^2$, often referred to as the likelihood. This likelihood function will take the following form:
+
+\[
+\boxed{L(\mu, \sigma^2 | y_1,y_2,\dots,y_n) = (\frac{1}{\sqrt{2\pi}\sigma})^n \times e^{-\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}} \\
+\]
+
+\
+\
+
+## 4. Write down the log likelihood function, $l(\mu, \sigma) = logL(\mu, \sigma)$, and negative log likelihood function $-l(\mu, \sigma)$. \
+
+\[
+\begin{aligned}
+  l(\mu, \sigma) &= logL(\mu, \sigma | y_1,y_2,\dots,y_n) \\
+  &= log[(\frac{1}{\sqrt{2\pi}\sigma})^n e^{-\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}] \\
+  &= nlog(\frac{1}{\sqrt{2\pi}\sigma}) - \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2 \\
+  &\boxed{= -nlog(\sqrt{2\pi}\sigma) - \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2} \\
+  \\
+  \\
+  -l(\mu, \sigma^2) &= -[-nlog(\sqrt{2\pi}\sigma) -\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2] \\
+  &\boxed{= nlog(\sqrt{2\pi}\sigma) + \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}
+\end{aligned}
+\]
+
+\
+\
+
+## 5. The maximum likelihood estimator of $\mu$ and $\sigma$ is: $(\hat{\mu}, \hat{\sigma}) = argmaxL(\mu, \sigma)$. Explain that it is equivalent to the following equations: \
+
+\[
+\begin{aligned}
+  (\hat{\mu}, \hat{\sigma}) &= argmax[l(\mu, \sigma)] =argmin[-l(\mu, \sigma)] \\
+  \\
+\end{aligned}
+\]
+
+The first equation, $(\hat{\mu}, \hat{\sigma}) = argmax[l(\mu, \sigma)]$, is equivalent to the original due to the fact that logarithmic functions are monotonically increasing (i.e. the value of the function is forever increasing over its range of x). This property allows us to apply a logarithmic transformation, but preserve the values of the parameters, in this case $\mu$ and $\sigma$ that maximize the likelihood function as they will also be the values that maximize the log likelihood function.
+
+\
+\
+
+The second function, the negative log likelihood, is simply a reflection across the x-axis, result of which is the previously maximum values of the log likelihood function now represent the minimum values of the $\textit{negative}$ log likelihood function. It therefore follow that the values of $\mu$ and $\sigma$ which minimize the negative log likelihood function are the same values that maximize both the likelihood and the log likelihood functions.
+
+\
+\
+
+## 6. Explain that the maximum likelihood estimator and least squared estimator of $\mu$ are the same. \
+
+With the maximum likelihood estimator, we are trying to find the value of $\mu$ that maximizes this expression: $(\frac{1}{\sqrt{2\pi}\sigma})^n \times e^{-\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}$. The variable $\mu$ is only present in one term of the expression
+
+\
+\
+
+## 7. Consider the car price example, and let Y be the price (in hundreds). Assume $Y \sim N(\mu, \sigma^2)$. \
+
+a) Read the data in R.
+
+b) Find $\hat{\mu}$ and $\hat{\sigma}$. Show your results.
+
+\
+\
+
+## 8. (Optional) Use calculus to show that for MLE:
+
+\[
+\begin{aligned}
+  \hat{\mu} &= \frac{1}{n} \sum_{i=1}^{n}y_i = \bar{y} \\
+\end{aligned}
+\]
+
+and
+
+\[
+\begin{aligned}
+  \hat{\sigma^2} = \frac{1}{n} \sum_{i=1}^{n}(y_i - \bar{y})^2 \\
+\end{aligned}
+\]
+
+Show your work. \
