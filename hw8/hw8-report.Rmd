@@ -1,0 +1,16 @@
+---
+title: "hw8-report"
+author: "jack mcshane"
+date: '2022-04-18'
+output: 
+  pdf_document:
+    extra_dependencies: ["amsmath", "amssymb", "ulem", "enumnitem", "listings"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages('enumitem', repos = "https://cran.us.r-project.org")
+library(enumitem)
+```
+
+## 1. What is

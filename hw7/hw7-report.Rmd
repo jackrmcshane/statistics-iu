@@ -9,9 +9,9 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#install.packages('ggplot2', repos = "https://cran.us.r-project.org")
-#library(ggplot2)
-#install.packages("ISLR")
+install.packages('ggplot2', repos = "https://cran.us.r-project.org")
+library(ggplot2)
+install.packages("ISLR")
 library(ISLR)
 ```
 
