@@ -58,11 +58,12 @@ Given that we have values for $y_1,y_2,\dots,y_n$, the equation above can now be
   l(\mu, \sigma) &= logL(\mu, \sigma | y_1,y_2,\dots,y_n) \\
   &= log[(\frac{1}{\sqrt{2\pi}\sigma})^n e^{-\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}] \\
   &= nlog(\frac{1}{\sqrt{2\pi}\sigma}) - \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2 \\
-  &\boxed{= -nlog(\sqrt{2\pi}\sigma) - \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2} \\
+  &= -nlog(\sqrt{2\pi}\sigma) - \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2 \\
+  &\boxed{= -nlog(\sqrt{2\pi}) -nlog(\sigma) - \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}
   \\
   \\
-  -l(\mu, \sigma^2) &= -[-nlog(\sqrt{2\pi}\sigma) -\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2] \\
-  &\boxed{= nlog(\sqrt{2\pi}\sigma) + \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}
+  -l(\mu, \sigma^2) &= -[-nlog(\sqrt{2\pi}) -nlog(\sigma) -\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2] \\
+  &\boxed{= nlog(\sqrt{2\pi}) + nlog(\sigma) + \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}
 \end{aligned}
 \]
 
@@ -90,7 +91,7 @@ The second function, the negative log likelihood, is simply a reflection across 
 
 ## 6. Explain that the maximum likelihood estimator and least squared estimator of $\mu$ are the same. \
 
-With the maximum likelihood estimator, we are trying to find the value of $\mu$ that maximizes this expression: $(\frac{1}{\sqrt{2\pi}\sigma})^n \times e^{-\frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2}$. The variable $\mu$ is only present in one term of the expression
+With the maximum likelihood estimator, we are trying to find the value of $\mu$ that maximizes this expression: $= -nlog(\sqrt{2\pi}\sigma) - \frac{1}{2\sigma^2} \sum_{i=1}^{n}(y_i - \mu)^2$. The variable $\mu$ is present only in the latter term of the expression and because we are maximizing the expression in terms of $\mu$, this is the only term we need consider. Ignoring the multiplying constant, this simply leaves us with the term $\sum_{i=1}^{n}(y_i - \mu)^2$ which mirrors the least squared estimator equation. Finally, because of the negative multiplier, we need to minimize the term to maximize the overall expression, leaving us with the least squared estimator, that is, $argmin\sum_{i=1}^{n}(y_i - \mu)^2$.
 
 \
 \
@@ -99,7 +100,45 @@ With the maximum likelihood estimator, we are trying to find the value of $\mu$ 
 
 a) Read the data in R.
 
+```{r, echo=FALSE}
+carprice = read.csv("carprice.csv", TRUE, ",")
+```
+```{r}
+head(carprice)
+```
+
+\
+\
+
 b) Find $\hat{\mu}$ and $\hat{\sigma}$. Show your results.
+
+```{r, echo=FALSE}
+fn.logL <- function(par, y){
+  n <- length(y)
+  Ln.l <- 0
+  mu.l <- par[1]
+  sigma.l <- par[2]
+  
+  for (i in 1:n){
+    Ln.l <- Ln.l + log(dnorm(y[i], mean=mu.l, sd=sigma.l))
+  }
+  
+  return(-Ln.l)
+}
+```
+
+\
+
+```{r}
+opt.out <- optim(c(100, 30), fn.logL, y=carprice[,4])
+
+mu.hat <- opt.out$par[1]
+sigma.hat <- opt.out$par[2]
+```
+```{r, echo=FALSE}
+print(paste("Mean estimation: ", mu.hat))
+print(paste("Std. Dev. estimation: ", sigma.hat))
+```
 
 \
 \
@@ -121,3 +160,31 @@ and
 \]
 
 Show your work. \
+
+From the Least Squares equation (you could also take the partial of the log likelihood):
+
+\[
+\begin{aligned}
+  \frac{d}{d\mu}\sum_{i=1}^{n}(y_i - \mu)^2 &= 0 \\
+  \sum_{i=1}^{n}(2)(y_i - \mu)(-1) &= 0 \\
+  -2\sum_{i=1}^{n}(y_i - \mu) &= 0 \\
+  \sum_{i=1}^{n}(y_i - \mu) &= 0 \\
+  \sum_{i=1}^{n}y_i - n\mu &= 0 \\
+  \mu &= \frac{1}{n}\sum_{i=1}^{n}y_i \\
+  \boxed{ \hat{\mu} = \bar{y} } \\
+\end{aligned}
+\]
+
+\
+
+From the log likelihood equation:
+
+\[
+\begin{aligned}
+  \frac{\partial l}{\partial\sigma}[-nlog(\sqrt{2\pi}) -nlog(\sigma) - \frac{1}{2}\sigma^{-2}\sum_{i=1}^{n}(y_i - \mu)^2] &= 0 \\
+  -\frac{n}{\sigma} + \frac{1}{\sigma^3}\sum_{i=1}^{n}(y_i - \mu)^2 &= 0 \\
+  n\sigma^{-1} &= \sigma^{-3}\sum_{i=1}^{n}(y_i - \mu)^2 \\
+  n\sigma^3\sigma^{-1} &= \sigma^3\sigma^{-3}\sum_{i=1}^{n}(y_i - \mu)^2 \\
+  \boxed{ \hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^{n}(y_i - \bar{y}) } \\
+\end{aligned}
+\]

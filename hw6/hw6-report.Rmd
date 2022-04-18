@@ -1,0 +1,151 @@
+---
+title: "hw6-report"
+author: "Jack McShane"
+date: '2022-04-02'
+output: 
+  pdf_document:
+    extra_dependencies: ["amsmath", "amssymb", "ulem", "enumitem", "listings"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages('ggplot2', repos = "https://cran.us.r-project.org")
+library(ggplot2)
+```
+
+\
+\
+
+## 1. Let $y_i$ be the car price (in hundreds), $x_{i1}$ be the age, and $x_{i2}$ be the mileage (in thousands) of the $i^{th}$ car, consider the following model
+\[ y_i = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \epsilon_i, i = 1,\dots,n \]
+where $\epsilon_i$ is the random error component and is assumed to be iid $N(0, \sigma^2)$. Write down the pdf $f(y_i)$.
+
+\[
+\begin{aligned}
+  \boxed{ f(y) = \frac{1}{\sqrt{2\pi}\sigma}\times e^{-\frac{1}{2\sigma^2}(y - (\beta_0 + \beta_1x_1 + \beta_2x_2))^2} }
+\end{aligned}
+\]
+
+\
+\
+
+## 2. Write down the joint distribution $f(y_1,\dots,y_n)$.
+
+\[
+\begin{aligned}
+  f(y_1,\dots,y_n) &= f(y_1) \times \dots \times f(y_n) \\
+  &\boxed{= (\frac{1}{\sqrt{2\pi}\sigma})^ne^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2}} \\
+\end{aligned}
+\]
+
+\
+\
+
+## 3. What is the likelihood function $L(\beta_0, \beta_1, \beta_2, \sigma)$.
+
+The Likelihood function occurs when data has been observed. It takes the following form:
+
+\[
+\boxed{ L(\beta_0, \beta_1, \beta_2, \sigma) = (\frac{1}{\sqrt{2\pi}\sigma})^ne^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2} }
+\]
+
+\
+\
+
+## 4. Write down the log likelihood function, $l(\beta_0, \beta_1, \beta_2, \sigma) = logL(\beta_0, \beta_1, \beta_2, \sigma)$, and negative log likelihood function $-l(\beta_0, \beta_1, \beta_2, \sigma)$.
+
+\[
+\begin{aligned}
+  l(\beta_0, \beta_1, \beta_2, \sigma) &= logL(\beta_0, \beta_1, \beta_2, \sigma) \\
+  &= log[(\frac{1}{\sqrt{2\pi}\sigma})^ne^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2}] \\
+  &= -nlog(\sqrt{2\pi}\sigma) - \frac{1}{2\sigma^2}\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2 \\
+  &\boxed{ = -nlog(\sqrt{2\pi}) - nlog(\sigma) - \frac{1}{2\sigma^2}\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2 } \\
+ \\
+ \\
+ -l(\beta_0, \beta_1, \beta_2, \sigma) &= -[-nlog(\sqrt{2\pi}) - nlog(\sigma) - \frac{1}{2\sigma^2}\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2] \\
+ &\boxed{ = nlog(\sqrt{2\pi}) + nlog(\sigma) + \frac{1}{2\sigma^2}\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2 }
+\end{aligned}
+\]
+
+\
+\
+
+## 5. The maximum likelihood estimator of $\beta_0, \beta_1, \beta_2$, and $\sigma$ is
+\[ (\hat{\beta_0}, \hat{\beta_1}, \hat{\beta_2}, \hat{\sigma}) = argmaxL(\beta_0, \beta_1, \beta_2, \sigma) \]
+explain that it is equivalent to the following
+\[ 
+\begin{aligned}
+  (\hat{\beta_0}, \hat{\beta_1}, \hat{\beta_2}, \hat{\sigma}) &= argmax[l(\beta_0, \beta_1, \beta_2, \sigma)] \\
+  &= argmin[-l(\beta_0, \beta_1, \beta_2, \sigma)]
+\end{aligned}
+\]
+
+\
+
+The first equation, $(\hat{\beta_0}, \hat{\beta_1}, \hat{\beta_2}, \hat{\sigma}) = argmax[l(\beta_0, \beta_1, \beta_2, \sigma)]$, is equivalent to the original due to the fact that logarithmic functions are monotonically increasing (i.e. the value of the function is forever increasing over its range of x). This property allows us to apply a logarithmic transformation, but preserve the values of the parameters, in this case $\beta_0$, $\beta_1$, $\beta_2$ and $\sigma$ that maximize the likelihood function as they will also be the values that maximize the log likelihood function.
+
+\
+\
+
+The second function, the negative log likelihood, is simply a reflection across the x-axis, result of which is the previously maximum values of the log likelihood function now represent the minimum values of the $\textit{negative}$ log likelihood function. It therefore follow that the values of $\beta_0$, $\beta_1$, $\beta_2$, and $\sigma$ which minimize the negative log likelihood function are the same values that maximize both the likelihood and the log likelihood functions.
+
+\
+\
+
+## 6. Explain that the maximum likelihood estimator and least squared estimator of $\beta_0, \beta_1, \beta_2$ are the same.
+
+With the maximum likelihood estimator, we are trying to find values for $\beta_0$, $\beta_1$, and $\beta_2$ that maximize the expression: $= -nlog(\sqrt{2\pi}\sigma) - \frac{1}{2\sigma^2} \sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2$. The variables $\beta_0$, $\beta_1$, and $\beta_2$ are present only in the latter term of the expression and because we are maximizing the expression in terms of these variables, it is the only term we need consider. Ignoring the multiplying constant, this simply leaves us with the term $\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2$ which mirrors the least squared estimator equation. Finally, because of the negative multiplier, we need to minimize the term to maximize the overall expression, leaving us with the least squared estimator, that is, $argmin\sum_{i=1}^{n}[y_i - (\beta_0 + \beta_1x_{i1} + \beta_2x_{i2})]^2$.
+
+\
+\
+
+## 7. In class, we show that $\hat{\beta} = (X^TX)^{-1}X^Ty$, carry out this computation in R, what is your $\hat{\beta_0}, \hat{\beta_1}, \hat{\beta_2}$?
+
+```{r, echo=FALSE}
+carprice <- read.csv("carprice.csv", TRUE, ",")
+#X <- as.matrix(carprice[,2:3])
+x1 <- as.matrix(carprice[,2])
+x2 <- as.matrix(carprice[,3])
+y <- as.matrix(carprice[,4])
+```
+```{r}
+y
+
+X <- cbind(1, x1, x2)
+X
+
+betas <- solve(t(X)%*%X)%*%t(X)%*%y
+betas
+```
+
+\
+\
+
+## 8. How do you interpret $\hat{\beta_1}$ and $\hat{\beta_2}$?
+
+$\hat{\beta_1}$ and $\hat{\beta_2}$ are estimations for the true $\beta_1$ and $\beta_2$. $\hat{\beta_1} and \hat{\beta_2}$ are the estimated parameters which determine the contribution of our observed features (age and mileage) to the car price prediction, and which minimize the least-squared error calculation. They describe for us (excluding $\beta_0$), the line of best fit for the data.
+
+$\hat{\beta_1} \approx -9.5$. This means that for every year the car gets older, its value drops approximately $950 as long as the mileage on the car does not change.
+$\\ \\$
+$\hat{\beta_2} \approx -.82$. This means that for every mile put on the car, the value of the car drops by approximately $82 as long as the age of the car does not change.
+
+\
+\
+
+## 9. Given your estimates, what is your price prediction of a used car with 4 years old, and 50,000 miles?
+
+```{r}
+pred <- betas[1] + betas[2]*4 + betas[3]*50
+pred
+```
+
+\
+\
+
+## 10. Use lm command, what is your $\hat{\beta_0}, \hat{\beta_1}, \hat{\beta_2}$? Are they the same as your answers in Question 7?
+
+```{r}
+lm(y~x1+x2)
+```
+
+Yes. While not $\textit{\textbf{EXACT}}$, each of the beta coefficients are nearly identical, further solidifying $y = \beta_0 + \beta_1x_1 + \beta_2x_2$ as the best fit line for the carprice dataset.
