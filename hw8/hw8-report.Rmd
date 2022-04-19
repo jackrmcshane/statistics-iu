@@ -4,13 +4,95 @@ author: "jack mcshane"
 date: '2022-04-18'
 output: 
   pdf_document:
-    extra_dependencies: ["amsmath", "amssymb", "ulem", "enumnitem", "listings"]
+    extra_dependencies: ["amsmath", "amssymb", "ulem", "enumerate", "listings"]
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-install.packages('enumitem', repos = "https://cran.us.r-project.org")
-library(enumitem)
 ```
 
-## 1. What is
+## Let $Y_1, Y_2, \dots, Y_n \sim_{iid} N(\theta, \sigma^2)$ where $\sigma^2$ is known. Consider $H_0: \theta \in \Omega_0$ vs $H_1: \theta \in \Omega_1$ where
+
+\[ \Omega_0 = (-\infty, \theta_0], \quad \Omega_1 = (\theta_0, \infty), \quad \Omega = (-\infty, \infty) = \Omega_0 \cup \Omega_1 \]
+
+\
+\
+
+## 1. Write down the joint distribution $f(y_1,\dots,y_n)$ and likelihood function $L(\theta)$.
+
+\[
+  \boxed{= \left( \frac{1}{\sqrt{2\pi}\sigma} \right)^n e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \theta)^2}}
+\]
+
+The two equations have the same form, but the unknowns are not the same. For the joint distribution, the y values have not yet been observed and are unknown. On the other hand, the joint distribution 
+$\textit{becomes}$ the likelihood function once these y values have been observed and the value of $\theta$ is the primary unknown of the equation.
+
+\
+\
+
+## 2. Given that the MLE is
+\[ \hat{\theta} = \bar{y} = \frac{1}{n}\sum_{i=1}^n y_i, \]
+
+## then what is the $max_{\theta \in \Omega}L(\theta)$?
+
+\[
+\begin{aligned}
+  maxL(\theta) = L(\bar{y}) = \boxed{\left( \frac{1}{\sqrt{2\pi}\sigma} \right)^n e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \bar{y})^2}}
+\end{aligned}
+\]
+
+\
+\
+
+## 3. Under $H_0: \theta \leq \theta_0$, the restricted MLE is
+\[
+\hat{\theta_R} = 
+\begin{cases}
+  \bar{y}, &\bar{y} \leq \theta_0 \\
+  \theta_0, &\bar{y} > \theta_0 \\
+\end{cases}
+\]
+
+## then what is $max_{\theta \in \Omega_0}L(\theta)$?
+
+\[
+\begin{aligned}
+max_{H_0}L(\theta) = L(\theta_0) &= 
+  \begin{cases}
+    \left( \frac{1}{\sqrt{2\pi}\sigma} \right)^n e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \bar{y})^2}, \quad \bar{y} \leq \theta_0 \\
+    \left( \frac{1}{\sqrt{2\pi}\sigma} \right)^n e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \theta_0)^2}, \quad \bar{y} > \theta_0 \\
+  \end{cases}
+  \\
+  &= \boxed{\left( \frac{1}{\sqrt{2\pi}\sigma} \right)^n e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \theta_0)^2}}
+\end{aligned}
+\]
+
+We can dismiss the case where $bar{y}$ is less than $\theta_0$ because the case invalidates our likelihood comparison in the first place. If ever $\bar{y}$ is less than $\theta_0$, your ratio evaluates to one, a value you will never reject. Hence, the only hypotheses worth evaluating are those that underestimate $\bar{y}$
+
+\
+\
+
+## 4. The likelihood ratio test statistic is 
+\[
+  \lambda(y_1,\dots,y_n) = \frac{ max_{\theta \in \Omega_0}L(\theta) }{max_{\theta \in \Omega}L(\theta) }
+\]
+
+## Obtain this likelihood ratio test statistic.
+
+\
+\
+
+## 5. The likelihood ratio test procedure is that we will reject $H_0$ if $\lambda(y_1,\dots,y_n) \leq k$, where $k < 1$. Explain that this is equivalent to $z \geq \sqrt{-2logk}$, where
+\[ z = \frac{\bar{y} - \theta_0}{\sigma / \sqrt{n}} \]
+
+\
+\
+
+## 6. Why must k < 1?
+
+One can tell that the value for comparison, k, must be less than 1 simply by understanding the terms in the ratio it is compared with. The denominator of $\lambda(y_1, \dots, y_n)$ is $max_{\theta \in \Omega}L(\theta)$. This term represents the global maximum of the likelihood with no restriction on the values that $\theta$ can take. The numerator of $\lambda(y_1,\dots,y_n)$ is the maximum of the same likelihood function, but with a restriction on the values that $\theta$ can take. It therefore follows that the value numerator will be less than that of the denominator, leading to a value wherein k < 1.
+
+\
+\
+
+## 7. (Optional) Derive both MLE $\hat{\theta}$ and restricted MLE $\hat{\theta_R}$.
