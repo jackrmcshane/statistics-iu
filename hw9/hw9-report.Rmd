@@ -17,6 +17,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## (a) What would be Type I Error? What would be Type II Error?
 
+Type I error involves selecting or accepting the wrong hypothesis when the evidence does not support it. An example of this kind of error would be a company pushing the idea that their drug is better than another even though the evidence supports the opposite conclusion.
+
+\
+
+Type II error involves selecting the wrong hypothesis due to a lack of data (or if the data is not representative). If there is not enough data to support the new hypothesis even though it is the correct one, our test procedure could lead one to select the incorrect hypothesis.
+
 \
 
 ## (b) In HW8, we show that the likelihood ratio test procedure is to reject $H_0$ if
@@ -27,7 +33,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 \[ \gamma(\theta) = P(N(0,1) \geq k_1 + \frac{\theta_0 - \theta}{\sigma/\sqrt{n}}) \]
 
-Let $\theta_0$ = 105, $\sigma$ = 10, n = 100 and $k_1$ = 1.8, plot this function, and comment on your plot.
+## Let $\theta_0$ = 105, $\sigma$ = 10, n = 100 and $k_1$ = 1.8, plot this function, and comment on your plot.
 
 \
 
