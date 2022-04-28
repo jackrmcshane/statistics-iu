@@ -67,7 +67,7 @@ max_{H_0}L(\theta) = L(\theta_0) &=
 \end{aligned}
 \]
 
-We can dismiss the case where $bar{y}$ is less than $\theta_0$ because the case invalidates our likelihood comparison in the first place. If ever $\bar{y}$ is less than $\theta_0$, your ratio evaluates to one, a value you will never reject. Hence, the only hypotheses worth evaluating are those that underestimate $\bar{y}$
+We can dismiss the case where $\bar{y}$ is less than $\theta_0$ because the case invalidates our likelihood comparison in the first place. If ever $\bar{y}$ is less than $\theta_0$, your ratio evaluates to one, a value you will never reject. Hence, the only hypotheses worth evaluating with our comparison are those that underestimate $\bar{y}$.
 
 \
 \
@@ -79,11 +79,45 @@ We can dismiss the case where $bar{y}$ is less than $\theta_0$ because the case 
 
 ## Obtain this likelihood ratio test statistic.
 
+\[
+\begin{aligned}
+  \lambda(y_i,\dots,y_n) &= \frac{ max_{\theta \in \Omega_0}L(\theta) }{ max_{\theta \in \Omega}L(\theta)} \\
+  &= \frac{ \left( \frac{1}{\sqrt{2\pi}\sigma} \right)^n e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \theta_0)^2} }{ \left( \frac{1}{\sqrt{2\pi}\sigma} \right)^n e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \bar{y})^2} } \\
+  &= e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \theta_0)^2 + \frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \bar{y})^2} \\
+  &= e^{-\frac{1}{2\sigma^2}[\sum_{i=1}^{n}(y_i - \theta_0)^2 - \sum_{i=1}^{n}(y_i - \bar{y})^2]} \\
+  &\boxed{= e^{-\frac{1}{2\sigma^2}n(\bar{y} - \theta_0)^2}} \\
+\end{aligned}
+\]
+
+Note:
+
+\[
+\begin{aligned}
+  &\sum_{i=1}^{n}(y_i - \theta_0)^2 - \sum_{i=1}^{n}(y_i - \bar{y})^2 \\
+  &= \sum_{i=1}^{n}(y_i - \bar{y} + \bar{y} - \theta_0)^2 - \sum_{i=1}^{n}(y_i - \bar{y})^2 \\
+  &= \sum_{i=1}^{n}(y_i - \bar{y})^2 + 2(y_i - \bar{y})(\bar{y} - \theta_0)^2 + (\bar{y} - \theta_0)^2 - \sum_{i=1}^{n}(y_i - \bar{y})^2 \\
+  &= n(\bar{y} - \theta_0)^2
+\end{aligned}
+\]
+
 \
 \
 
 ## 5. The likelihood ratio test procedure is that we will reject $H_0$ if $\lambda(y_1,\dots,y_n) \leq k$, where $k < 1$. Explain that this is equivalent to $z \geq \sqrt{-2logk}$, where
 \[ z = \frac{\bar{y} - \theta_0}{\sigma / \sqrt{n}} \]
+
+We must start from our likelihood ratio metric (i.e. $e^{-\frac{1}{2\sigma^2}n(\bar{y} - \theta_0)^2} \leq k$) and from there, we can derive our value for z.
+
+\[
+\begin{aligned}
+  &e^{-\frac{1}{2\sigma^2}n(\bar{y} - \theta_0)^2} \leq k \\
+  &\Rightarrow \quad - \frac{1}{2\sigma^2}n(\bar{y} - \theta_0)^2 \leq log(k) \\
+  &\Rightarrow \quad \frac{ n(\bar{y} - \theta_0)^2 }{\sigma^2} \geq -2log(k) \\
+  &\Rightarrow \quad \frac{ |\bar{y} - \theta_0| }{ \sigma / \sqrt{n} } \geq \sqrt{-2log(k)} \\
+\end{aligned}
+\]
+
+At this point, if we assign z to the value shown in the equation, we can see that comparing our likelihood ratio to k is equivalent to comparing our z metric to $\sqrt{-2log(k)}$.
 
 \
 \
@@ -94,5 +128,3 @@ One can tell that the value for comparison, k, must be less than 1 simply by und
 
 \
 \
-
-## 7. (Optional) Derive both MLE $\hat{\theta}$ and restricted MLE $\hat{\theta_R}$.
